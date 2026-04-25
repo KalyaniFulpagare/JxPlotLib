@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
     <name>JPlotX</name>
     <description>Reusable Java data visualization library inspired by Matplotlib</description>
-    <url>https://github.com/${github.repository}</url>
+    <url>https://github.com/KalyaniFulpagare/JxPlotLib</url>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -27,9 +27,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:https://github.com/${github.repository}.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/${github.repository}.git</developerConnection>
-        <url>https://github.com/${github.repository}</url>
+        <connection>scm:git:https://github.com/KalyaniFulpagare/JxPlotLib.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:KalyaniFulpagare/JxPlotLib.git</developerConnection>
+        <url>https://github.com/KalyaniFulpagare/JxPlotLib</url>
         <tag>HEAD</tag>
     </scm>
 

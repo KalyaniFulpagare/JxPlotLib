@@ -1,6 +1,17 @@
 # JPlotX
 
+[![GitHub repo](https://img.shields.io/badge/GitHub-KalyaniFulpagare%2FJxPlotLib-181717?logo=github)](https://github.com/KalyaniFulpagare/JxPlotLib)
+[![Java](https://img.shields.io/badge/Java-17+-ea7b1c)](https://www.oracle.com/java/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 JPlotX is a Java-based data visualization library inspired by Matplotlib. It renders line, area, bar, stacked bar, histogram, scatter, bubble, pie, and heatmap charts through a modular `Graphics2D` pipeline and exports them as PNG images for analytical reporting, dashboards, and backend workflows.
+
+## Why JPlotX
+
+- Built as a reusable library, not just a one-off visualization project
+- Designed for developers who need dynamic chart generation from uploaded or queried data
+- Supports runtime column mapping instead of fixed schemas
+- Ready for Maven-style distribution and GitHub Packages publishing
 
 ## Features
 
@@ -247,6 +258,13 @@ Example consumer Maven config:
 </dependencies>
 ```
 
+## Repo Assets
+
+- License: [LICENSE](/C:/Users/Kalyani/Desktop/JxPlotLib/LICENSE)
+- Changelog: [CHANGELOG.md](/C:/Users/Kalyani/Desktop/JxPlotLib/CHANGELOG.md)
+- Contribution guide: [CONTRIBUTING.md](/C:/Users/Kalyani/Desktop/JxPlotLib/CONTRIBUTING.md)
+- GitHub Packages guide: [docs/github-packages.md](/C:/Users/Kalyani/Desktop/JxPlotLib/docs/github-packages.md)
+
 ## Resume-Style Summary
 
-Developed JPlotX, a Java-based data visualization library inspired by Python Matplotlib, enabling high-quality rendering of line, bar, histogram, scatter, and heatmap charts from MySQL-sourced data. Implemented a modular, object-oriented rendering architecture using custom Graphics2D pipelines, accurate axis scaling, and automatic export of visualizations for analytical reporting.
+Developed JPlotX, a reusable Java-based data visualization library inspired by Python Matplotlib, enabling dynamic rendering of line, area, bar, stacked bar, scatter, bubble, histogram, pie, and heatmap charts from CSV uploads and MySQL-sourced data. Implemented a scalable, object-oriented rendering architecture with customizable themes, multi-series support, runtime column mapping, and Maven-ready distribution for third-party developer integration.
