@@ -9,6 +9,7 @@ public record PlotOptions(
         boolean fillMarkers,
         int markerSize,
         float strokeWidth,
+        boolean trendLineVisible,
         int leftMargin,
         int rightMargin,
         int topMargin,
@@ -28,6 +29,6 @@ public record PlotOptions(
     }
 
     public static PlotOptions defaults() {
-        return new PlotOptions(PlotThemes.defaultTheme(), true, false, false, true, false, 10, 2.5f, 110, 60, 80, 110);
+        return new PlotOptions(PlotThemes.defaultTheme(), true, false, false, true, false, 10, 2.5f, false, 110, 60, 80, 110);
     }
 }

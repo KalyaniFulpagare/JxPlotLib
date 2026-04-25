@@ -30,6 +30,7 @@ JPlotX.line()
     .xLabel("Quarter")
     .yLabel("Revenue")
     .values(List.of(1d, 2d, 3d), List.of(10d, 25d, 18d))
+    .trendLine()
     .export(Path.of("exports"), "revenue-trend");
 ```
 

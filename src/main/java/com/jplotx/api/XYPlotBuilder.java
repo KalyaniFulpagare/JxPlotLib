@@ -24,6 +24,7 @@ public final class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
     private final List<SeriesDefinition> seriesDefinitions = new ArrayList<>();
     private Boolean numericX;
     private List<String> categoryLabels = List.of();
+    private boolean trendLineVisible;
 
     public XYPlotBuilder(JPlotX engine, ChartType chartType) {
         super(engine);
@@ -96,6 +97,15 @@ public final class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
         return this;
     }
 
+    public XYPlotBuilder trendLine() {
+        return trendLine(true);
+    }
+
+    public XYPlotBuilder trendLine(boolean trendLineVisible) {
+        this.trendLineVisible = trendLineVisible;
+        return this;
+    }
+
     public XYPlotBuilder fromTable(DataTable table, String xColumn, String yColumn) {
         return fromTable(table, xColumn, yColumn, null, null);
     }
@@ -148,6 +158,25 @@ public final class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 
         XYDataset dataset = new XYDataset(series, Boolean.TRUE.equals(numericX), categoryLabels);
         return new ChartSession(new ChartSpec(title, xLabel, yLabel, chartType), dataset, buildOptions());
+    }
+
+    @Override
+    protected com.jplotx.chart.style.PlotOptions buildOptions() {
+        return new com.jplotx.chart.style.PlotOptions(
+                theme,
+                legendVisible,
+                pointLabelsVisible,
+                valueLabelsVisible,
+                markersVisible,
+                fillMarkers,
+                markerSize,
+                strokeWidth,
+                trendLineVisible,
+                leftMargin,
+                rightMargin,
+                topMargin,
+                bottomMargin
+        );
     }
 
     @Override

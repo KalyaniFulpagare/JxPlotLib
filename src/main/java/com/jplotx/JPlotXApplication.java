@@ -68,6 +68,7 @@ public final class JPlotXApplication {
                 .yLabel("Leads")
                 .theme(PlotThemes.aurora())
                 .legend(true)
+                .trendLine()
                 .pointLabels(true)
                 .fromTable(leadScatter, "spend", "leads", "campaign", "label")
                 .export(Path.of("exports"), "scatter");

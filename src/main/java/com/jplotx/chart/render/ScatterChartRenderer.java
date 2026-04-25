@@ -8,9 +8,12 @@ import com.jplotx.chart.dataset.XYSeries;
 import com.jplotx.chart.style.PlotOptions;
 import com.jplotx.chart.style.PlotTheme;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Stroke;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +51,37 @@ public final class ScatterChartRenderer implements ChartRenderer<XYDataset> {
         }
 
         List<GraphicsSupport.LegendEntry> legendEntries = new ArrayList<>();
+        List<GraphicsSupport.InfoEntry> infoEntries = new ArrayList<>();
         for (XYSeries series : seriesList) {
             legendEntries.add(new GraphicsSupport.LegendEntry(series.name(), series.color(), series.markerStyle()));
+            if (options.trendLineVisible() && dataset.useNumericX()) {
+                RegressionSupport.TrendLine trendLine = RegressionSupport.fit(series.points());
+                if (trendLine != null) {
+                    Stroke previousStroke = g2.getStroke();
+                    Color trendColor = translucent(series.color(), 190);
+                    double startX = minX(series);
+                    double endX = maxX(series);
+                    double startY = trendLine.yAt(startX);
+                    double endY = trendLine.yAt(endX);
+                    g2.setColor(trendColor);
+                    g2.setStroke(new BasicStroke(
+                            Math.max(1.5f, series.strokeWidth()),
+                            BasicStroke.CAP_ROUND,
+                            BasicStroke.JOIN_ROUND,
+                            10f,
+                            new float[]{10f, 8f},
+                            0f
+                    ));
+                    g2.draw(new Line2D.Double(
+                            area.x + xScale.map(startX, area.width),
+                            area.y + area.height - yScale.map(startY, area.height),
+                            area.x + xScale.map(endX, area.width),
+                            area.y + area.height - yScale.map(endY, area.height)
+                    ));
+                    g2.setStroke(previousStroke);
+                    infoEntries.add(new GraphicsSupport.InfoEntry(series.name() + ": " + trendLine.summary(), trendColor));
+                }
+            }
             for (int i = 0; i < series.points().size(); i++) {
                 XYPoint point = series.points().get(i);
                 double x = area.x + (dataset.useNumericX()
@@ -76,6 +108,9 @@ public final class ScatterChartRenderer implements ChartRenderer<XYDataset> {
         if (options.legendVisible() && seriesList.size() > 1) {
             GraphicsSupport.drawLegend(g2, area, legendEntries, theme);
         }
+        if (!infoEntries.isEmpty()) {
+            GraphicsSupport.drawInfoBox(g2, area, infoEntries, theme);
+        }
     }
 
     private double minX(List<XYSeries> series) {
@@ -88,12 +123,28 @@ public final class ScatterChartRenderer implements ChartRenderer<XYDataset> {
         return Double.isFinite(min) ? min : 0;
     }
 
+    private double minX(XYSeries series) {
+        double min = Double.POSITIVE_INFINITY;
+        for (XYPoint point : series.points()) {
+            min = Math.min(min, point.x());
+        }
+        return Double.isFinite(min) ? min : 0;
+    }
+
     private double maxX(List<XYSeries> series) {
         double max = Double.NEGATIVE_INFINITY;
         for (XYSeries item : series) {
             for (XYPoint point : item.points()) {
                 max = Math.max(max, point.x());
             }
+        }
+        return Double.isFinite(max) ? max : 1;
+    }
+
+    private double maxX(XYSeries series) {
+        double max = Double.NEGATIVE_INFINITY;
+        for (XYPoint point : series.points()) {
+            max = Math.max(max, point.x());
         }
         return Double.isFinite(max) ? max : 1;
     }
@@ -132,5 +183,9 @@ public final class ScatterChartRenderer implements ChartRenderer<XYDataset> {
             fractions.add(GraphicsSupport.categoryFraction(i, Math.max(1, size), false));
         }
         return fractions;
+    }
+
+    private Color translucent(Color color, int alpha) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(0, Math.min(255, alpha)));
     }
 }

@@ -163,6 +163,50 @@ final class GraphicsSupport {
         g2.setFont(previous);
     }
 
+    static void drawInfoBox(Graphics2D g2, Rectangle area, List<InfoEntry> entries, PlotTheme theme) {
+        if (entries.isEmpty()) {
+            return;
+        }
+
+        Font previous = g2.getFont();
+        g2.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        FontMetrics metrics = g2.getFontMetrics();
+
+        int maxWidth = 0;
+        for (InfoEntry entry : entries) {
+            maxWidth = Math.max(maxWidth, metrics.stringWidth(entry.label()));
+        }
+
+        int boxWidth = Math.min(area.width - 24, Math.max(210, maxWidth + 44));
+        int boxHeight = entries.size() * 20 + 16;
+        int x = area.x + 12;
+        int y = area.y + 12;
+
+        Color background = new Color(
+                theme.legendBackgroundColor().getRed(),
+                theme.legendBackgroundColor().getGreen(),
+                theme.legendBackgroundColor().getBlue(),
+                228
+        );
+
+        g2.setColor(background);
+        g2.fill(new RoundRectangle2D.Double(x, y, boxWidth, boxHeight, 16, 16));
+        g2.setColor(theme.legendBorderColor());
+        g2.draw(new RoundRectangle2D.Double(x, y, boxWidth, boxHeight, 16, 16));
+
+        int currentY = y + 18;
+        for (InfoEntry entry : entries) {
+            g2.setColor(entry.color());
+            g2.setStroke(new BasicStroke(2f));
+            g2.draw(new Line2D.Double(x + 12, currentY - 4, x + 24, currentY - 4));
+            g2.setColor(theme.textColor());
+            g2.drawString(entry.label(), x + 30, currentY);
+            currentY += 20;
+        }
+
+        g2.setFont(previous);
+    }
+
     static void drawMarker(Graphics2D g2, MarkerStyle markerStyle, double centerX, double centerY, int size, boolean fill, Color strokeColor, Color fillColor) {
         MarkerStyle style = markerStyle == null ? MarkerStyle.CIRCLE : markerStyle;
         if (style == MarkerStyle.NONE) {
@@ -234,5 +278,8 @@ final class GraphicsSupport {
     }
 
     record LegendEntry(String label, Color color, MarkerStyle markerStyle) {
+    }
+
+    record InfoEntry(String label, Color color) {
     }
 }

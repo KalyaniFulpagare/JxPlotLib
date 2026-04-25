@@ -144,6 +144,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<T>> {
                 fillMarkers,
                 markerSize,
                 strokeWidth,
+                false,
                 leftMargin,
                 rightMargin,
                 topMargin,
