@@ -11,7 +11,7 @@ JPlotX is a Java-based data visualization library inspired by Matplotlib. It ren
 - Built as a reusable library, not just a one-off visualization project
 - Designed for developers who need dynamic chart generation from uploaded or queried data
 - Supports runtime column mapping instead of fixed schemas
-- Ready for Maven-style distribution and GitHub Packages publishing
+- Ready for Maven Central and GitHub Packages publishing
 
 ## Features
 
@@ -217,15 +217,34 @@ JPlotX.line()
 
 ## Maven Dependency
 
-After packaging or installing locally, other Java projects can consume JPlotX using:
+For Maven Central-style consumption, use:
 
 ```xml
 <dependency>
-    <groupId>com.jplotx</groupId>
+    <groupId>io.github.kalyanifulpagare</groupId>
     <artifactId>jplotx</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
+
+Java imports stay the same:
+
+```java
+import com.jplotx.JPlotX;
+```
+
+## Maven Central Publishing
+
+JPlotX is now prepared for Maven Central publishing through Sonatype Central Portal.
+
+High-level flow:
+
+1. Sign in to Sonatype Central Portal.
+2. Verify the namespace `io.github.kalyanifulpagare`.
+3. Create Central publishing tokens and GPG signing secrets.
+4. Run the included GitHub Actions workflow at `.github/workflows/publish-maven-central.yml`.
+
+Detailed setup steps are in [docs/maven-central.md](/C:/Users/Kalyani/Desktop/JxPlotLib/docs/maven-central.md).
 
 ## GitHub Packages Publishing
 
@@ -251,7 +270,7 @@ Example consumer Maven config:
 
 <dependencies>
     <dependency>
-        <groupId>com.jplotx</groupId>
+        <groupId>io.github.kalyanifulpagare</groupId>
         <artifactId>jplotx</artifactId>
         <version>1.0.0</version>
     </dependency>
@@ -263,6 +282,7 @@ Example consumer Maven config:
 - License: [LICENSE](/C:/Users/Kalyani/Desktop/JxPlotLib/LICENSE)
 - Changelog: [CHANGELOG.md](/C:/Users/Kalyani/Desktop/JxPlotLib/CHANGELOG.md)
 - Contribution guide: [CONTRIBUTING.md](/C:/Users/Kalyani/Desktop/JxPlotLib/CONTRIBUTING.md)
+- Maven Central guide: [docs/maven-central.md](/C:/Users/Kalyani/Desktop/JxPlotLib/docs/maven-central.md)
 - GitHub Packages guide: [docs/github-packages.md](/C:/Users/Kalyani/Desktop/JxPlotLib/docs/github-packages.md)
 
 ## Resume-Style Summary

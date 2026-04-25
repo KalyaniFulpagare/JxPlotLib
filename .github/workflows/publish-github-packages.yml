@@ -28,6 +28,6 @@ jobs:
           server-password: GITHUB_TOKEN
 
       - name: Publish package
-        run: mvn -B -DskipTests deploy -Dgithub.repository=${{ github.repository }}
+        run: mvn -B -Pgithub-packages -DskipTests deploy -Dgithub.repository=${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
