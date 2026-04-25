@@ -33,9 +33,9 @@ JPlotX.line()
     .export(Path.of("exports"), "revenue-trend");
 ```
 
-## Eclipse Java Project
+## Plain Java Project
 
-For a plain Eclipse Java project, add `jplotx-1.0.0.jar` to the build path and use Java 17 or newer.
+For a plain Java project, add `jplotx-1.0.0.jar` to the build path and use Java 17 or newer.
 
 For MySQL features, also add MySQL Connector/J.
 
