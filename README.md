@@ -13,7 +13,7 @@ JPlotX is a Java charting library for generating PNG charts from Java code, CSV 
 <dependency>
     <groupId>io.github.kalyanifulpagare</groupId>
     <artifactId>jplotx</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -36,12 +36,33 @@ JPlotX.line()
 
 ## Plain Java Project
 
-For a plain Java project, add `jplotx-1.0.0.jar` to the build path and use Java 17 or newer.
+For a plain Java project, add `jplotx-1.0.1.jar` to the build path and use Java 17 or newer.
 
 Direct jar:
-https://repo1.maven.org/maven2/io/github/kalyanifulpagare/jplotx/1.0.0/jplotx-1.0.0.jar
+https://repo1.maven.org/maven2/io/github/kalyanifulpagare/jplotx/1.0.1/jplotx-1.0.1.jar
 
 For MySQL features, also add MySQL Connector/J.
+
+## Aggregate Raw Data
+
+```java
+import com.jplotx.JPlotX;
+import com.jplotx.data.table.Aggregation;
+import com.jplotx.data.table.DataTable;
+import java.nio.file.Path;
+
+JPlotX jPlotX = new JPlotX();
+DataTable raw = jPlotX.loadCsv(Path.of("data", "movie_ticket_dataset.csv"));
+DataTable monthly = raw.aggregateBy("month", "total_revenue", Aggregation.SUM, "monthly_revenue");
+
+JPlotX.line()
+    .title("Monthly Revenue")
+    .xLabel("Month")
+    .yLabel("Revenue")
+    .fromTable(monthly, "month", "monthly_revenue")
+    .trendLine()
+    .export(Path.of("exports"), "monthly-revenue");
+```
 
 More:
 

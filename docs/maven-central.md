@@ -6,7 +6,7 @@ Published coordinates:
 
 - `groupId`: `io.github.kalyanifulpagare`
 - `artifactId`: `jplotx`
-- `version`: `1.0.0`
+- `version`: `1.0.1`
 
 Java imports remain unchanged:
 
@@ -93,14 +93,14 @@ After the package is published and synced, developers can use:
 <dependency>
   <groupId>io.github.kalyanifulpagare</groupId>
   <artifactId>jplotx</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
 Gradle:
 
 ```gradle
-implementation "io.github.kalyanifulpagare:jplotx:1.0.0"
+implementation "io.github.kalyanifulpagare:jplotx:1.0.1"
 ```
 
 ## 8. Important note

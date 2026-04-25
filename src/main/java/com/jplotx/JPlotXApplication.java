@@ -2,6 +2,7 @@ package com.jplotx;
 
 import com.jplotx.chart.style.MarkerStyle;
 import com.jplotx.chart.style.PlotThemes;
+import com.jplotx.data.table.Aggregation;
 import com.jplotx.data.table.DataTable;
 
 import java.nio.file.Path;
@@ -22,6 +23,7 @@ public final class JPlotXApplication {
         DataTable histogram = jPlotX.loadCsv(Path.of("samples", "histogram.csv"));
         DataTable pieMarketShare = jPlotX.loadCsv(Path.of("samples", "pie-market-share.csv"));
         DataTable heatmap = jPlotX.loadCsv(Path.of("samples", "heatmap.csv"));
+        DataTable averageRegionalSales = regionalSales.aggregateBy("region", "sales", Aggregation.AVG, "avg_sales");
 
         Path line = JPlotX.line()
                 .title("Revenue Trend By Product")
@@ -52,6 +54,15 @@ public final class JPlotXApplication {
                 .valueLabels(true)
                 .fromTable(regionalSales, "region", "sales", "year")
                 .export(Path.of("exports"), "bar");
+
+        Path aggregatedBar = JPlotX.bar()
+                .title("Average Regional Sales")
+                .xLabel("Region")
+                .yLabel("Average Sales")
+                .theme(PlotThemes.aurora())
+                .valueLabels(true)
+                .fromTable(averageRegionalSales, "region", "avg_sales")
+                .export(Path.of("exports"), "aggregated-bar");
 
         Path stackedBar = JPlotX.stackedBar()
                 .title("Quarterly Expense Mix")
@@ -111,6 +122,7 @@ public final class JPlotXApplication {
         System.out.println("Generated line chart at " + line.toAbsolutePath());
         System.out.println("Generated area chart at " + area.toAbsolutePath());
         System.out.println("Generated bar chart at " + bar.toAbsolutePath());
+        System.out.println("Generated aggregated bar chart at " + aggregatedBar.toAbsolutePath());
         System.out.println("Generated stacked bar chart at " + stackedBar.toAbsolutePath());
         System.out.println("Generated scatter chart at " + scatter.toAbsolutePath());
         System.out.println("Generated bubble chart at " + bubble.toAbsolutePath());

@@ -2,6 +2,13 @@
 
 All notable changes to JPlotX will be documented in this file.
 
+## 1.0.1 - 2026-04-26
+
+- Added `trendLine()` support for numeric line and scatter charts with regression equation and `R^2` overlay
+- Added `DataTable.aggregateBy(...)` with `SUM`, `AVG`, `MIN`, `MAX`, and `COUNT` for turning raw CSV data into chart-ready summaries
+- Added aggregated usage examples for preparing monthly and grouped analytics from raw datasets
+- Prepared release metadata and docs for the `1.0.1` Maven Central publication
+
 ## 1.0.0 - 2026-04-25
 
 - Initial public release of JPlotX as a reusable Java plotting library

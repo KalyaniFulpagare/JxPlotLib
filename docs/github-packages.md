@@ -68,9 +68,9 @@ Add the dependency:
 
 ```xml
 <dependency>
-  <groupId>com.jplotx</groupId>
+  <groupId>io.github.kalyanifulpagare</groupId>
   <artifactId>jplotx</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
@@ -90,7 +90,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.jplotx:jplotx:1.0.0"
+    implementation "io.github.kalyanifulpagare:jplotx:1.0.1"
 }
 ```
 

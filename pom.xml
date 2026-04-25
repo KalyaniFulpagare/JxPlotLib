@@ -5,7 +5,7 @@
 
     <groupId>io.github.kalyanifulpagare</groupId>
     <artifactId>jplotx</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>JPlotX</name>
     <description>Reusable Java data visualization library inspired by Matplotlib</description>
@@ -16,7 +16,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <github.repository>${env.GITHUB_REPOSITORY}</github.repository>
-        <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
     </properties>
 
     <licenses>
@@ -110,6 +109,8 @@
                             <goal>sign</goal>
                         </goals>
                         <configuration>
+                            <passphraseEnvName>MAVEN_GPG_PASSPHRASE</passphraseEnvName>
+                            <useAgent>false</useAgent>
                             <gpgArguments>
                                 <arg>--batch</arg>
                                 <arg>--yes</arg>
