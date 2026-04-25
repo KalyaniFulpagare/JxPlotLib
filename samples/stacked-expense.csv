@@ -1,0 +1,13 @@
+quarter,category,amount
+Q1,Infrastructure,18
+Q1,Marketing,11
+Q1,Operations,9
+Q2,Infrastructure,22
+Q2,Marketing,13
+Q2,Operations,10
+Q3,Infrastructure,25
+Q3,Marketing,14
+Q3,Operations,12
+Q4,Infrastructure,27
+Q4,Marketing,16
+Q4,Operations,13

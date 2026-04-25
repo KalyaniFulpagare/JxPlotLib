@@ -1,0 +1,11 @@
+month,segment,revenue
+Jan,Enterprise,42
+Feb,Enterprise,48
+Mar,Enterprise,55
+Apr,Enterprise,60
+May,Enterprise,66
+Jan,SMB,28
+Feb,SMB,31
+Mar,SMB,37
+Apr,SMB,41
+May,SMB,46

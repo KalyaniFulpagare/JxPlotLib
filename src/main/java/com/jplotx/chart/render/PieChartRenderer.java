@@ -1,0 +1,63 @@
+package com.jplotx.chart.render;
+
+import com.jplotx.chart.ChartSpec;
+import com.jplotx.chart.PlotContext;
+import com.jplotx.chart.dataset.PieDataset;
+import com.jplotx.chart.dataset.PieSlice;
+import com.jplotx.chart.style.MarkerStyle;
+import com.jplotx.chart.style.PlotOptions;
+import com.jplotx.chart.style.PlotTheme;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Arc2D;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class PieChartRenderer implements ChartRenderer<PieDataset> {
+
+    @Override
+    public void render(Graphics2D g2, PlotContext context, ChartSpec spec, PieDataset dataset, PlotOptions options) {
+        Rectangle area = context.plotArea();
+        PlotTheme theme = options.theme();
+        GraphicsSupport.enableQuality(g2);
+        GraphicsSupport.paintBackground(g2, context.width(), context.height(), theme);
+        GraphicsSupport.paintCard(g2, area, theme);
+        GraphicsSupport.drawTitle(g2, spec.title(), context.width(), theme);
+
+        int diameter = Math.min(area.width - 220, area.height - 40);
+        int pieX = area.x + 20;
+        int pieY = area.y + Math.max(10, (area.height - diameter) / 2);
+
+        double total = dataset.slices().stream().mapToDouble(PieSlice::value).sum();
+        double startAngle = 90.0;
+        g2.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+
+        List<GraphicsSupport.LegendEntry> legendEntries = new ArrayList<>();
+        for (PieSlice slice : dataset.slices()) {
+            legendEntries.add(new GraphicsSupport.LegendEntry(slice.label(), slice.color(), MarkerStyle.CIRCLE));
+            double angle = total == 0 ? 0 : (slice.value() / total) * 360d;
+            g2.setColor(slice.color());
+            g2.fill(new Arc2D.Double(pieX, pieY, diameter, diameter, startAngle, -angle, Arc2D.PIE));
+            g2.setColor(Color.WHITE);
+            g2.draw(new Arc2D.Double(pieX, pieY, diameter, diameter, startAngle, -angle, Arc2D.PIE));
+
+            if (options.valueLabelsVisible()) {
+                double mid = Math.toRadians(startAngle - angle / 2d);
+                int centerX = pieX + diameter / 2;
+                int centerY = pieY + diameter / 2;
+                int labelX = (int) Math.round(centerX + Math.cos(mid) * (diameter * 0.28));
+                int labelY = (int) Math.round(centerY - Math.sin(mid) * (diameter * 0.28));
+                String text = total == 0 ? "0%" : String.format("%.1f%%", (slice.value() / total) * 100d);
+                g2.drawString(text, labelX - 12, labelY);
+            }
+            startAngle -= angle;
+        }
+
+        if (options.legendVisible()) {
+            GraphicsSupport.drawLegend(g2, area, legendEntries, theme);
+        }
+    }
+}
