@@ -21,6 +21,7 @@ JPlotX is a Java charting library for generating PNG charts from Java code, CSV 
 
 ```java
 import com.jplotx.JPlotX;
+import java.util.List;
 import java.nio.file.Path;
 
 new JPlotX();
@@ -31,6 +32,12 @@ JPlotX.line()
     .values(List.of(1d, 2d, 3d), List.of(10d, 25d, 18d))
     .export(Path.of("exports"), "revenue-trend");
 ```
+
+## Eclipse Java Project
+
+For a plain Eclipse Java project, add `jplotx-1.0.0.jar` to the build path and use Java 17 or newer.
+
+For MySQL features, also add MySQL Connector/J.
 
 More:
 
