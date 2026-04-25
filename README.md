@@ -37,6 +37,9 @@ JPlotX.line()
 
 For a plain Java project, add `jplotx-1.0.0.jar` to the build path and use Java 17 or newer.
 
+Direct jar:
+https://repo1.maven.org/maven2/io/github/kalyanifulpagare/jplotx/1.0.0/jplotx-1.0.0.jar
+
 For MySQL features, also add MySQL Connector/J.
 
 More:
