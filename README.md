@@ -67,5 +67,4 @@ JPlotX.line()
 More:
 
 - Maven Central: https://central.sonatype.com/artifact/io.github.kalyanifulpagare/jplotx
-- Publishing guide: [docs/maven-central.md](docs/maven-central.md)
-- GitHub Packages: [docs/github-packages.md](docs/github-packages.md)
+
