@@ -7,6 +7,14 @@
 
 JPlotX is a Java charting library for generating PNG charts from Java code, CSV files, and MySQL data.
 
+## Gallery
+
+| | |
+|---|---|
+| ![Line chart with trend line](assets/gallery/line.png) | ![Grouped bar chart](assets/gallery/bar.png) |
+| ![Stacked bar chart](assets/gallery/stacked-bar.png) | ![Scatter chart with regression lines](assets/gallery/scatter.png) |
+| ![Pie chart](assets/gallery/pie.png) | ![Heatmap](assets/gallery/heatmap.png) |
+
 ## Install
 
 ```xml
