@@ -126,10 +126,17 @@ public abstract class PlotBuilder<T extends PlotBuilder<T>> {
         return engine.write(buildSession(), width, height, outputFile);
     }
 
+    public Path save(Path outputFile, String format) throws IOException {
+        return engine.write(buildSession(), width, height, outputFile, format);
+    }
+
     public Path export(Path outputDirectory, String filePrefix) throws IOException {
         return engine.export(buildSession(), width, height, outputDirectory, filePrefix);
     }
 
+    public Path export(Path outputDirectory, String filePrefix, String format) throws IOException {
+        return engine.export(buildSession(), width, height, outputDirectory, filePrefix, format);
+    }
     public void show() {
         engine.show(buildSession(), width, height);
     }

@@ -84,11 +84,20 @@ public final class JPlotX {
         return exportService.writeChart(image, outputFile);
     }
 
+    public Path write(ChartSession chartSession, int width, int height, Path outputFile, String format) throws IOException {
+        BufferedImage image = render(chartSession, width, height);
+        return exportService.writeChart(image, outputFile, format);
+    }
+
     public Path export(ChartSession chartSession, int width, int height, Path outputDirectory, String filePrefix) throws IOException {
         BufferedImage image = render(chartSession, width, height);
         return exportService.exportChart(image, outputDirectory, filePrefix);
     }
 
+    public Path export(ChartSession chartSession, int width, int height, Path outputDirectory, String filePrefix, String format) throws IOException {
+        BufferedImage image = render(chartSession, width, height);
+        return exportService.exportChart(image, outputDirectory, filePrefix, format);
+    }
     public void show(ChartSession chartSession, int width, int height) {
         BufferedImage image = render(chartSession, width, height);
         PlotPreviewer.show(image, chartSession.spec().title());
