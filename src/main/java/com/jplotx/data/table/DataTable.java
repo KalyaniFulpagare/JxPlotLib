@@ -8,17 +8,41 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * An immutable, in-memory table of rows sharing a fixed set of columns.
+ *
+ * <p>Every row must provide a value for every declared column (see
+ * {@link #DataTable(List, List)}); use {@link #ofRows(List)} to build a
+ * table from loosely-typed maps without worrying about column ordering
+ * or gaps, since it infers the column list from the union of all row keys.
+ *
+ * <p>{@link #aggregateBy} is the main way to reshape data for charting:
+ * it groups rows by one or more columns and reduces a numeric column with
+ * SUM, AVG, MIN, MAX, or COUNT, returning a new {@code DataTable} with one
+ * row per group.
+ */
 public final class DataTable {
 
     private final List<String> columns;
     private final List<DataRow> rows;
 
+    /**
+     * Creates a table from an explicit column list and rows.
+     *
+     * @throws IllegalArgumentException if any row is missing a declared column
+     */
     public DataTable(List<String> columns, List<DataRow> rows) {
         this.columns = List.copyOf(columns);
         this.rows = List.copyOf(rows);
         validate();
     }
 
+    /**
+     * Builds a table from a list of maps, inferring the column list from the
+     * union of all keys across all rows (in first-seen order). Rows may omit
+     * keys that other rows provide; missing values simply won't exist for
+     * that row/column pair.
+     */
     public static DataTable ofRows(List<Map<String, Object>> rows) {
         Set<String> columns = new LinkedHashSet<>();
         List<DataRow> dataRows = new ArrayList<>();
@@ -29,22 +53,31 @@ public final class DataTable {
         return new DataTable(new ArrayList<>(columns), dataRows);
     }
 
+    /** Returns the table's column names, in declaration order. */
     public List<String> columns() {
         return columns;
     }
 
+    /** Returns all rows, in insertion order. */
     public List<DataRow> rows() {
         return rows;
     }
 
+    /** Returns the number of rows in the table. */
     public int rowCount() {
         return rows.size();
     }
 
+    /** Returns whether the table declares the given column. */
     public boolean hasColumn(String column) {
         return columns.contains(column);
     }
 
+    /**
+     * Returns the given column's values, in row order, coerced to strings.
+     *
+     * @throws IllegalArgumentException if the column doesn't exist
+     */
     public List<String> stringColumn(String column) {
         ensureColumn(column);
         List<String> values = new ArrayList<>();
@@ -54,6 +87,11 @@ public final class DataTable {
         return values;
     }
 
+    /**
+     * Returns the given column's values, in row order, coerced to doubles.
+     *
+     * @throws IllegalArgumentException if the column doesn't exist
+     */
     public List<Double> numericColumn(String column) {
         ensureColumn(column);
         List<Double> values = new ArrayList<>();
@@ -63,6 +101,12 @@ public final class DataTable {
         return values;
     }
 
+    /**
+     * Groups rows by the string value of {@code column}, preserving each
+     * group's first-seen order.
+     *
+     * @throws IllegalArgumentException if the column doesn't exist
+     */
     public Map<String, List<DataRow>> groupBy(String column) {
         ensureColumn(column);
         Map<String, List<DataRow>> grouped = new LinkedHashMap<>();
@@ -72,18 +116,35 @@ public final class DataTable {
         return grouped;
     }
 
+    /**
+     * Groups rows by {@code groupColumn} and reduces {@code valueColumn} with
+     * {@code aggregation}. The result column is named
+     * {@code "<aggregation>_<valueColumn>"} (e.g. {@code "sum_sales"}).
+     */
     public DataTable aggregateBy(String groupColumn, String valueColumn, Aggregation aggregation) {
         return aggregateBy(List.of(groupColumn), valueColumn, aggregation, defaultResultColumn(valueColumn, aggregation));
     }
 
+    /** Like {@link #aggregateBy(String, String, Aggregation)}, but with a custom result column name. */
     public DataTable aggregateBy(String groupColumn, String valueColumn, Aggregation aggregation, String resultColumn) {
         return aggregateBy(List.of(groupColumn), valueColumn, aggregation, resultColumn);
     }
 
+    /** Like {@link #aggregateBy(String, String, Aggregation)}, but grouping by multiple columns at once. */
     public DataTable aggregateBy(List<String> groupColumns, String valueColumn, Aggregation aggregation) {
         return aggregateBy(groupColumns, valueColumn, aggregation, defaultResultColumn(valueColumn, aggregation));
     }
 
+    /**
+     * Groups rows by {@code groupColumns} (in the order given) and reduces
+     * {@code valueColumn} with {@code aggregation}, returning one row per
+     * distinct combination of group values plus the aggregated result under
+     * {@code resultColumn}. Groups are returned in first-seen order.
+     *
+     * @throws IllegalArgumentException if {@code groupColumns} is empty, any
+     *         column doesn't exist, {@code resultColumn} is blank, or
+     *         {@code resultColumn} clashes with a group column name
+     */
     public DataTable aggregateBy(List<String> groupColumns, String valueColumn, Aggregation aggregation, String resultColumn) {
         validateAggregation(groupColumns, valueColumn, aggregation, resultColumn);
 
