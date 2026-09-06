@@ -27,7 +27,7 @@ public final class BubbleChartRenderer implements ChartRenderer<BubbleDataset> {
 
         List<BubbleSeries> seriesList = dataset.series();
         NumericScale xScale = NumericScale.of(minX(seriesList), maxX(seriesList), false, 6);
-        NumericScale yScale = NumericScale.of(minY(seriesList), maxY(seriesList), false, 6);
+        NumericScale yScale = NumericScale.ofWithTopHeadroom(minY(seriesList), maxY(seriesList), false, 6, 0.20);
         double minSize = minSize(seriesList);
         double maxSize = maxSize(seriesList);
 

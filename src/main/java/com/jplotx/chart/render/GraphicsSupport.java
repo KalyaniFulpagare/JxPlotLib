@@ -274,7 +274,10 @@ final class GraphicsSupport {
         if (centered) {
             return (index + 0.5) / count;
         }
-        return (double) index / (count - 1);
+        // Inset the first/last category slightly so their markers/lines
+        // don't land exactly on the plot border and get clipped.
+        double margin = 1.0 / (count * 4.0);
+        return margin + (index / (double) (count - 1)) * (1.0 - 2 * margin);
     }
 
     record LegendEntry(String label, Color color, MarkerStyle markerStyle) {

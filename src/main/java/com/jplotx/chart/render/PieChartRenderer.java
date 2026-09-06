@@ -27,9 +27,21 @@ public final class PieChartRenderer implements ChartRenderer<PieDataset> {
         GraphicsSupport.paintCard(g2, area, theme);
         GraphicsSupport.drawTitle(g2, spec.title(), context.width(), theme);
 
-        int diameter = Math.min(area.width - 220, area.height - 40);
-        int pieX = area.x + 20;
+        int margin = 40;
+        int diameter = Math.min(area.width - margin * 2, area.height - margin);
+        int pieX = area.x + (area.width - diameter) / 2;
         int pieY = area.y + Math.max(10, (area.height - diameter) / 2);
+
+        // The legend is a small corner badge, not a reserved column, so we center
+        // the pie in the full width above. Only if that centered position would
+        // actually run into the legend's footprint do we nudge the pie left.
+        if (options.legendVisible()) {
+            int legendZoneLeft = area.x + area.width - 220;
+            int pieRight = pieX + diameter;
+            if (pieRight > legendZoneLeft) {
+                pieX = Math.max(area.x + margin, legendZoneLeft - diameter - 12);
+            }
+        }
 
         double total = dataset.slices().stream().mapToDouble(PieSlice::value).sum();
         double startAngle = 90.0;

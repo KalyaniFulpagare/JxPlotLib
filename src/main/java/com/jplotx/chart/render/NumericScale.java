@@ -17,6 +17,17 @@ public final class NumericScale {
         this.ticks = ticks;
     }
 
+    // Like of(), but pads the max end of the range before computing "nice"
+    // bounds, so data points don't render flush against the top of the plot
+    // area (where a legend box commonly sits for XY-style charts).
+    public static NumericScale ofWithTopHeadroom(double min, double max, boolean includeZero, int desiredTickCount, double headroomFraction) {
+        double safeMin = Double.isFinite(min) ? min : 0;
+        double safeMax = Double.isFinite(max) ? max : 1;
+        double range = safeMax - safeMin;
+        double paddedMax = safeMax + (range == 0 ? Math.abs(safeMax == 0 ? 1.0 : safeMax) * headroomFraction : range * headroomFraction);
+        return of(min, paddedMax, includeZero, desiredTickCount);
+    }
+
     public static NumericScale of(double min, double max, boolean includeZero, int desiredTickCount) {
         if (!Double.isFinite(min) || !Double.isFinite(max)) {
             min = 0;
@@ -68,8 +79,13 @@ public final class NumericScale {
         return ticks;
     }
 
+    // Keeps markers/points off the plot edges by reserving a small pixel
+    // margin on both ends of the scale, instead of mapping exactly to [0, pixels].
+    private static final double EDGE_MARGIN_PX = 6.0;
+
     public double map(double value, int pixels) {
-        return ((value - lowerBound) / (upperBound - lowerBound)) * pixels;
+        double usablePixels = Math.max(1.0, pixels - 2 * EDGE_MARGIN_PX);
+        return EDGE_MARGIN_PX + ((value - lowerBound) / (upperBound - lowerBound)) * usablePixels;
     }
 
     public String format(double value) {

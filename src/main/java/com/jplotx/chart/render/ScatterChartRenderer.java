@@ -29,7 +29,7 @@ public final class ScatterChartRenderer implements ChartRenderer<XYDataset> {
         GraphicsSupport.drawTitle(g2, spec.title(), context.width(), theme);
 
         List<XYSeries> seriesList = dataset.series();
-        NumericScale yScale = NumericScale.of(minY(seriesList), maxY(seriesList), false, 6);
+        NumericScale yScale = NumericScale.ofWithTopHeadroom(minY(seriesList), maxY(seriesList), false, 6, 0.20);
         NumericScale xScale = dataset.useNumericX() ? NumericScale.of(minX(seriesList), maxX(seriesList), false, 6) : null;
         List<String> categories = dataset.categoryLabels().isEmpty()
                 ? seriesList.get(0).points().stream().map(XYPoint::label).toList()
