@@ -110,6 +110,12 @@ public final class JPlotXApplication {
                 .fromTable(pieMarketShare, "vendor", "share")
                 .export(Path.of("exports"), "pie");
 
+        Path pieSvg = JPlotX.pie()
+                .title("Market Share")
+                .theme(PlotThemes.graphite())
+                .fromTable(pieMarketShare, "vendor", "share")
+                .export(Path.of("exports"), "pie", "svg");
+
         Path heatmapPath = JPlotX.heatmap()
                 .title("Monthly Regional Heatmap")
                 .xLabel("Region")

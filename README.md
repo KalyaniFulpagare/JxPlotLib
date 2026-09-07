@@ -72,6 +72,20 @@ JPlotX.line()
     .export(Path.of("exports"), "monthly-revenue");
 ```
 
+## Export Formats
+
+Charts can be exported as PNG, JPEG, or SVG (vector):
+
+```java
+JPlotX.line()
+    .values(xValues, yValues)
+    .save(Path.of("chart.svg"), "svg");
+```
+
+SVG export is powered by [FreeHEP VectorGraphics](https://github.com/freehep/freehep-vectorgraphics)
+(LGPL), used here as an unmodified library dependency. PNG/JPEG export has no
+external dependency.
+
 More:
 
 - Maven Central: https://central.sonatype.com/artifact/io.github.kalyanifulpagare/jplotx

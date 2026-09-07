@@ -15,7 +15,10 @@ import com.jplotx.service.ExportService;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Entry point for JPlotX. Use the static factory methods (e.g. {@link #line()},
@@ -30,10 +33,18 @@ import java.nio.file.Path;
  *     .values(List.of(1d, 2d, 3d), List.of(10d, 25d, 18d))
  *     .export(Path.of("exports"), "revenue-trend");
  * }</pre>
+ *
+ * <p>Charts can be exported as PNG, JPEG, or SVG (vector) by passing a format
+ * string to {@link #write} / {@link #export} (or the corresponding
+ * {@code PlotBuilder.save}/{@code export} overloads). SVG export is powered by
+ * <a href="https://github.com/freehep/freehep-vectorgraphics">FreeHEP VectorGraphics</a>
+ * (LGPL) via its {@code SVGGraphics2D}, which every JPlotX renderer draws
+ * into transparently since they only use the standard {@code Graphics2D} API.
  */
 public final class JPlotX {
 
     private static final JPlotX DEFAULT = new JPlotX();
+    private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
 
     private final ChartImageRenderer imageRenderer;
     private final ExportService exportService;
@@ -114,9 +125,15 @@ public final class JPlotX {
     /**
      * Renders a chart session and writes it to {@code outputFile} in the given format.
      *
-     * @param format "png", "jpg", or "jpeg" (case-insensitive)
+     * @param format "png", "jpg"/"jpeg", or "svg" (case-insensitive). SVG output is
+     *               vector and re-renders the chart directly rather than converting
+     *               an existing raster image.
      */
     public Path write(ChartSession chartSession, int width, int height, Path outputFile, String format) throws IOException {
+        if (isSvg(format)) {
+            imageRenderer.renderSvg(chartSession, width, height, outputFile);
+            return outputFile;
+        }
         BufferedImage image = render(chartSession, width, height);
         return exportService.writeChart(image, outputFile, format);
     }
@@ -134,9 +151,16 @@ public final class JPlotX {
      * Renders a chart session and writes it into {@code outputDirectory} with a
      * timestamped filename, in the given format.
      *
-     * @param format "png", "jpg", or "jpeg" (case-insensitive)
+     * @param format "png", "jpg"/"jpeg", or "svg" (case-insensitive)
      */
     public Path export(ChartSession chartSession, int width, int height, Path outputDirectory, String filePrefix, String format) throws IOException {
+        if (isSvg(format)) {
+            Files.createDirectories(outputDirectory);
+            String fileName = filePrefix + "-" + LocalDateTime.now().format(TIMESTAMP_FORMAT) + ".svg";
+            Path outputFile = outputDirectory.resolve(fileName);
+            imageRenderer.renderSvg(chartSession, width, height, outputFile);
+            return outputFile;
+        }
         BufferedImage image = render(chartSession, width, height);
         return exportService.exportChart(image, outputDirectory, filePrefix, format);
     }
@@ -145,5 +169,9 @@ public final class JPlotX {
     public void show(ChartSession chartSession, int width, int height) {
         BufferedImage image = render(chartSession, width, height);
         PlotPreviewer.show(image, chartSession.spec().title());
+    }
+
+    private static boolean isSvg(String format) {
+        return format != null && "svg".equalsIgnoreCase(format.trim());
     }
 }
