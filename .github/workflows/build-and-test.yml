@@ -25,4 +25,8 @@ jobs:
           cache: maven
 
       - name: Build and run tests
-        run: mvn -B verify
+        # Stops at the "test" phase (compile + run tests) rather than "verify",
+        # because this project's maven-gpg-plugin is bound to the verify phase
+        # and requires a signing key that's intentionally only configured in
+        # the separate release workflows, not here.
+        run: mvn -B test
