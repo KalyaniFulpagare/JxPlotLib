@@ -5,7 +5,7 @@
 
     <groupId>io.github.kalyanifulpagare</groupId>
     <artifactId>jplotx</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>JPlotX</name>
     <description>Reusable Java data visualization library inspired by Matplotlib</description>
